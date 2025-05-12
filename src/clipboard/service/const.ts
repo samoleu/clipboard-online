@@ -1,0 +1,3 @@
+export const ONE_HOUR_IN_MILLISECONDS = 1000 * 60 * 60;
+export const ALPHABET_WITH_NUMBERS =
+  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
