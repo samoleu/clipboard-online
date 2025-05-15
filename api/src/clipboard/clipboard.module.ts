@@ -1,12 +1,19 @@
 import { Module } from '@nestjs/common';
 import { ClipboardController } from './controller/clipboard.controller';
 import { ClipboardService } from './service/clipboard.service';
-import { ClipboardRepository } from './repository/clipboard.repository';
-import { DatabaseModule } from 'src/database/database.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ClipboardSchema } from './model/clipboard.model';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: 'Clipboard',
+        schema: ClipboardSchema,
+      },
+    ]),
+  ],
   controllers: [ClipboardController],
-  providers: [ClipboardService, ClipboardRepository],
+  providers: [ClipboardService],
 })
 export class ClipboardModule {}
