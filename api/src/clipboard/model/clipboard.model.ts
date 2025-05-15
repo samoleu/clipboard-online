@@ -20,7 +20,7 @@ export const ClipboardSchema = new mongoose.Schema({
 });
 
 export interface Clipboard {
-  id: string;
+  _id: string;
   code: string;
   content: string;
   createdAt?: Date;
