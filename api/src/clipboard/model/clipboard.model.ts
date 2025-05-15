@@ -1,24 +1,28 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import mongoose from 'mongoose';
 
-@Entity('clipboard')
-export class Clipboard {
-  @PrimaryGeneratedColumn()
-  id?: number;
+export const ClipboardSchema = new mongoose.Schema({
+  code: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  singleVisualization: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-  @Column()
-  code?: string;
-
-  @Column()
+export interface Clipboard {
+  _id: string;
+  code: string;
   content: string;
-
-  @CreateDateColumn({ type: 'timestamp' })
   createdAt?: Date;
-
-  @Column({ type: 'boolean' })
   singleVisualization: boolean;
 }
