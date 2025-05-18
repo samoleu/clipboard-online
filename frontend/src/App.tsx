@@ -3,30 +3,47 @@ import "./markdown.css";
 import ClipboardCode from "./components/ClipboardCode";
 import EditorArea from "./components/EditorArea";
 import SidePanel from "./components/SidePanel";
+import axios from "axios";
 
 const App: React.FC = () => {
   const [texto, setTexto] = useState("");
-  const [codigo, setCodigo] = useState("Ad21e7");
+  const [codigo, setCodigo] = useState("------");
 
-  const [options, setOptions] = useState<{
+  const [, setOptions] = useState<{
     singleView: boolean;
     expirationTime: string | null;
   } | null>(null);
 
-  const handleCreate = (opts: {
+  const recoverContent = async () => {
+    if (codigo.trim() === "") return;
+
+    const response = await axios.get(
+      `http://localhost:3000/clipboard/${codigo}`
+    );
+    if (response.status === 200) {
+      setTexto(response.data.content);
+    }
+  };
+
+  const handleCreate = async (opts: {
     singleView: boolean;
     expirationTime: string | null;
   }) => {
     setOptions(opts);
 
     const payload = {
-      code: codigo,
       content: texto,
-      options: opts,
+      singleVisualization: opts.singleView,
     };
 
     console.log("Payload para envio:", payload);
-    // Fazer aqui a chamada para a API para criar o link
+    const response = await axios.post(
+      "http://localhost:3000/clipboard",
+      payload
+    );
+    if (response.status === 201) {
+      setCodigo(response.data.code);
+    }
   };
 
   return (
@@ -36,11 +53,18 @@ const App: React.FC = () => {
         style={{ minHeight: "calc(100vh - 96px)" }}
       >
         <ClipboardCode
-          initialCode={codigo}
-          onSelect={(code) => setCodigo(code)}
+          code={codigo}
+          setCode={setCodigo}
+          onSelect={(code) => {
+            setCodigo(code);
+            recoverContent();
+          }}
         />
         <div className="flex flex-1 px-6 gap-4">
-          <EditorArea onContentChange={(content) => setTexto(content)} />
+          <EditorArea
+            value={texto}
+            onContentChange={(content) => setTexto(content)}
+          />
           <SidePanel onCreate={handleCreate} />
         </div>
       </div>

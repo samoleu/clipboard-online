@@ -3,18 +3,26 @@ import { marked } from "marked";
 
 interface EditorAreaProps {
   onContentChange?: (content: string) => void;
+  value?: string;
 }
 
-const EditorArea: React.FC<EditorAreaProps> = ({ onContentChange }) => {
-  const [markdown, setMarkdown] = useState("");
+const EditorArea: React.FC<EditorAreaProps> = ({ onContentChange, value }) => {
+  const [markdown, setMarkdown] = useState(value ?? "");
   const [isEditing, setIsEditing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    if (!isEditing && value !== undefined && value !== markdown) {
+      setMarkdown(value);
+    }
+  }, [value, isEditing, markdown]);
+
+  const handleBlur = () => {
+    setIsEditing(false);
     if (onContentChange) {
       onContentChange(markdown);
     }
-  }, [markdown, onContentChange]);
+  };
 
   const getMarkdownText = () => {
     const rawMarkup = marked.parse(markdown);
@@ -29,7 +37,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ onContentChange }) => {
           className="flex-1 p-2 rounded-md border border-gray-300 resize-none"
           value={markdown}
           onChange={(e) => setMarkdown(e.target.value)}
-          onBlur={() => setIsEditing(false)}
+          onBlur={handleBlur}
           autoFocus
         />
       ) : (
