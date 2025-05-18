@@ -1,0 +1,77 @@
+.markdown-preview h1 {
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1a202c; /* tailwind gray-900 */
+}
+
+.markdown-preview h2 {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #2d3748; /* tailwind gray-800 */
+}
+
+.markdown-preview h3 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #4a5568; /* tailwind gray-700 */
+}
+
+.markdown-preview p {
+  font-size: 1rem;
+  color: #4a5568; /* tailwind gray-700 */
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.markdown-preview ul,
+.markdown-preview ol {
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-preview li {
+  margin-bottom: 0.25rem;
+}
+
+.markdown-preview a {
+  color: #3182ce; /* tailwind blue-600 */
+  text-decoration: underline;
+}
+
+.markdown-preview strong {
+  font-weight: 700;
+}
+
+.markdown-preview em {
+  font-style: italic;
+}
+
+.markdown-preview code {
+  background-color: #edf2f7; /* tailwind gray-100 */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.markdown-preview pre {
+  background-color: #2d3748; /* tailwind gray-800 */
+  color: #f7fafc; /* tailwind gray-50 */
+  padding: 1rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.markdown-preview ul {
+  list-style-type: disc; /* ou circle, square, none */
+}
+
+.markdown-preview ol {
+  list-style-type: decimal; /* ou upper-roman, lower-alpha, etc. */
+}
