@@ -2,6 +2,7 @@
   "name": "clipboard-online",
   "private": true,
   "workspaces": [
-    "api"
+    "api",
+    "frontend"
   ]
 }

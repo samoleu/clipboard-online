@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from "react";
 
 interface ClipboardCodeProps {
   onSelect: (code: string) => void;
-  initialCode?: string;
+  code: string;
+  setCode: (code: string) => void;
 }
 
-const ClipboardCode: React.FC<ClipboardCodeProps> = ({ onSelect, initialCode }) => {
-  const [code, setCode] = useState('');
-
-  useEffect(() => {
-    if (initialCode) {
-      setCode(initialCode);
-    }
-  }, [initialCode]);
-
+const ClipboardCode: React.FC<ClipboardCodeProps> = ({
+  onSelect,
+  code,
+  setCode,
+}) => {
   const handleSelect = () => {
     if (code.trim()) {
       onSelect(code.trim());
@@ -31,7 +28,7 @@ const ClipboardCode: React.FC<ClipboardCodeProps> = ({ onSelect, initialCode }) 
         maxLength={6}
         className="text-xl font-bold text-gray-900 bg-white border border-gray-400 rounded px-2 py-1 w-32 text-center"
       />
-      {code.trim() !== '' && (
+      {code.trim() !== "" && (
         <button
           onClick={handleSelect}
           className="mt-2 text-sm font-semibold bg-[#3b2e1d] text-white px-4 py-1.5 rounded hover:bg-[#2c2217] transition"
