@@ -3,6 +3,7 @@ import { ClipboardController } from './controller/clipboard.controller';
 import { ClipboardService } from './service/clipboard.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ClipboardSchema } from './model/clipboard.model';
+import { AccessCodeGeneratorProvider } from './service/access-code-generator.provider';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { ClipboardSchema } from './model/clipboard.model';
     ]),
   ],
   controllers: [ClipboardController],
-  providers: [ClipboardService],
+  providers: [ClipboardService, AccessCodeGeneratorProvider],
 })
 export class ClipboardModule {}
