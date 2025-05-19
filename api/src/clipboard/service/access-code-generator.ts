@@ -1,16 +1,9 @@
 import { customAlphabet } from 'nanoid';
 import { ALPHABET_WITH_NUMBERS } from './const';
 
-export class AccessCodeGenerator {
-  private static readonly nanoid = customAlphabet(ALPHABET_WITH_NUMBERS, 6);
-
-  static generate(): string {
-    return this.nanoid();
-  }
-}
-
 export class AccessCodeGeneratorSingleton {
   private static instance: AccessCodeGeneratorSingleton;
+  private readonly nanoid = customAlphabet(ALPHABET_WITH_NUMBERS, 6);
 
   private constructor() {}
 
@@ -22,6 +15,6 @@ export class AccessCodeGeneratorSingleton {
   }
 
   generate(): string {
-    return AccessCodeGenerator.generate();
+    return this.nanoid();
   }
 }
