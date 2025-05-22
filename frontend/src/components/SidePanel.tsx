@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface SidePanelProps {
-  onCreate: (options: { singleView: boolean; expirationTime: string | null }) => void;
+  onCreate: (options: {
+    singleView: boolean;
+    expirationTime: string | null;
+  }) => void;
 }
 
 const SidePanel: React.FC<SidePanelProps> = ({ onCreate }) => {
   const [singleView, setSingleView] = useState(true);
-  const [expirationTime, setExpirationTime] = useState('1h');
+  const [expirationTime, setExpirationTime] = useState("1h");
 
   const handleSingleViewToggle = (value: boolean) => {
     setSingleView(value);
@@ -22,7 +25,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ onCreate }) => {
           type="checkbox"
           checked={singleView}
           onChange={(e) => handleSingleViewToggle(e.target.checked)}
-          className="w-5 h-5 accent-[#3b2e1d]"
+          className="w-5 h-5 cursor-pointer accent-[#3b2e1d]"
         />
       </label>
 
@@ -33,7 +36,9 @@ const SidePanel: React.FC<SidePanelProps> = ({ onCreate }) => {
           onChange={(e) => setExpirationTime(e.target.value)}
           disabled={singleView}
           className={`w-full p-2 border rounded-md text-sm ${
-            singleView ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'text-gray-700'
+            singleView
+              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+              : "text-gray-700"
           }`}
         >
           <option value="1h">1 hora</option>
@@ -46,7 +51,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ onCreate }) => {
       </div>
 
       <button
-        className="mt-4 bg-[#3b2e1d] text-white text-sm font-semibold py-2 px-4 rounded-md hover:bg-[#2c2217] transition"
+        className="mt-4 cursor-pointer bg-[#3b2e1d] text-white text-sm font-semibold py-2 px-4 rounded-md hover:bg-[#2c2217] transition"
         onClick={() => {
           onCreate({
             singleView,

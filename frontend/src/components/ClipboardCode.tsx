@@ -31,7 +31,7 @@ const ClipboardCode: React.FC<ClipboardCodeProps> = ({
       {code.trim() !== "" && (
         <button
           onClick={handleSelect}
-          className="mt-2 text-sm font-semibold bg-[#3b2e1d] text-white px-4 py-1.5 rounded hover:bg-[#2c2217] transition"
+          className="mt-2 text-sm cursor-pointer font-semibold bg-[#3b2e1d] text-white px-4 py-1.5 rounded hover:bg-[#2c2217] transition"
         >
           Selecionar
         </button>
