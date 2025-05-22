@@ -7,7 +7,7 @@ import axios from "axios";
 
 const App: React.FC = () => {
   const [texto, setTexto] = useState("");
-  const [codigo, setCodigo] = useState("------");
+  const [codigo, setCodigo] = useState("");
 
   const [, setOptions] = useState<{
     singleView: boolean;
