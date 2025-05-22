@@ -3,7 +3,9 @@ import "./markdown.css";
 import ClipboardCode from "./components/ClipboardCode";
 import EditorArea from "./components/EditorArea";
 import SidePanel from "./components/SidePanel";
-import axios from "axios";
+import axiosProvider from "./utils/axios";
+
+const axios = axiosProvider.getInstance();
 
 const App: React.FC = () => {
   const [texto, setTexto] = useState("");
@@ -17,9 +19,7 @@ const App: React.FC = () => {
   const recoverContent = async () => {
     if (codigo.trim() === "") return;
 
-    const response = await axios.get(
-      `http://localhost:3000/clipboard/${codigo}`
-    );
+    const response = await axios.get(`/clipboard/${codigo}`);
     if (response.status === 200) {
       setTexto(response.data.content);
     }
@@ -37,10 +37,7 @@ const App: React.FC = () => {
     };
 
     console.log("Payload para envio:", payload);
-    const response = await axios.post(
-      "http://localhost:3000/clipboard",
-      payload
-    );
+    const response = await axios.post("/clipboard", payload);
     if (response.status === 201) {
       setCodigo(response.data.code);
     }

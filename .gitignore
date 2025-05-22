@@ -3,8 +3,7 @@ node_modules
 /api/node_modules
 
 # Build output
-/dist
-/api/dist
+dist
 /build
 dist-ssr
 
