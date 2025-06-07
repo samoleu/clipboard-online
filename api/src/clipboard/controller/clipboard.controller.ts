@@ -12,6 +12,7 @@ import { ClipboardService } from '../service/clipboard.service';
 import { Response } from 'express';
 import { CreateClipboardDTO } from '../dto/create-clipboard.dto';
 import { Clipboard } from '../model/clipboard.model';
+import { ClipboardAdapter } from '../adapter/clipboard.adapter';
 
 @Controller('clipboard')
 export class ClipboardController {
@@ -35,15 +36,12 @@ export class ClipboardController {
     @Body(new ValidationPipe()) body: CreateClipboardDTO,
     @Res() res: Response,
   ) {
-    const request = new CreateClipboardDTO(
-      body.content,
-      body.singleVisualization,
-    );
-    const clipboardCreated: Clipboard = await this.service.create(
-      request.toClipboardDTO(),
-    );
-    if (!clipboardCreated)
+    const clipboardDTO = ClipboardAdapter.fromCreateDto(body);
+    const clipboardCreated: Clipboard = await this.service.create(clipboardDTO);
+
+    if (!clipboardCreated) {
       return res.status(HttpStatus.BAD_REQUEST).send(clipboardCreated);
+    }
     return res.status(HttpStatus.CREATED).send(clipboardCreated);
   }
 }
