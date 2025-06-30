@@ -3,8 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClipboardDTO } from '../dto/clipboard.dto';
 import { Clipboard } from '../model/clipboard.model';
-import { ONE_HOUR_IN_MILLISECONDS } from './const';
 import { AccessCodeGeneratorSingleton } from './access-code-generator';
+import { ExpirationContext } from './strategies/expiration-context';
+import { ExpirationTimeParser } from './utils/expiration-time-parser';
 
 @Injectable()
 export class ClipboardService {
@@ -13,23 +14,15 @@ export class ClipboardService {
     private readonly clipboard: Model<Clipboard>,
     @Inject('ACCESS_CODE_GENERATOR')
     private readonly accessCodeGenerator: AccessCodeGeneratorSingleton,
+    private readonly expirationContext: ExpirationContext,
   ) {}
 
   async findOne(code: string): Promise<Clipboard | null> {
     const query = await this.clipboard.findOne({ code: code });
-
     if (!query) return null;
 
-    if (query.singleVisualization) {
-      await this.clipboard.deleteOne({ code: code });
-    } else if (
-      query.createdAt &&
-      new Date().getTime() - query.createdAt.getTime() >=
-        ONE_HOUR_IN_MILLISECONDS
-    ) {
-      await this.clipboard.deleteOne({ code: code });
-      return null;
-    }
+    const strategy = this.expirationContext.getStrategyFor(query);
+    await strategy.onAccess(query, this.clipboard);
 
     return query;
   }
@@ -37,6 +30,11 @@ export class ClipboardService {
   async create(clipboardDTO: ClipboardDTO) {
     clipboardDTO.code = this.accessCodeGenerator.generate();
     clipboardDTO.createdAt = new Date();
+
+    if (!clipboardDTO.singleVisualization) {
+      const expirationTimeMs = ExpirationTimeParser.parse(clipboardDTO.expirationTime || '1h');
+      clipboardDTO.expiresAt = new Date(Date.now() + expirationTimeMs);
+    }
 
     const clipboardInstance = new this.clipboard(clipboardDTO);
     const query = await clipboardInstance.save();

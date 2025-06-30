@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString, IsOptional, IsIn } from 'class-validator';
 
 export class CreateClipboardDTO {
   @IsNotEmpty({ message: 'Content cannot be empty' })
@@ -9,8 +9,16 @@ export class CreateClipboardDTO {
   @IsBoolean({ message: 'singleVisualization is a boolean parameter' })
   singleVisualization: boolean;
 
-  constructor(content: string, singleVisualization: boolean) {
+  @IsOptional()
+  @IsString({ message: 'expirationTime is a string parameter' })
+  @IsIn(['1h', '6h', '12h', '1d', '3d', '7d'], { 
+    message: 'expirationTime must be one of: 1h, 6h, 12h, 1d, 3d, 7d' 
+  })
+  expirationTime?: string;
+
+  constructor(content: string, singleVisualization: boolean, expirationTime?: string) {
     this.content = content;
     this.singleVisualization = singleVisualization;
+    this.expirationTime = expirationTime;
   }
 }

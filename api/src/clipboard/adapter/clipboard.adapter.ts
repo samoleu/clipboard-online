@@ -6,6 +6,7 @@ export class ClipboardAdapter {
     const clipboardDTO = new ClipboardDTO();
     clipboardDTO.content = dto.content;
     clipboardDTO.singleVisualization = dto.singleVisualization;
+    clipboardDTO.expirationTime = dto.expirationTime;
     return clipboardDTO;
   }
 }

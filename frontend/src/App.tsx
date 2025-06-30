@@ -31,10 +31,14 @@ const App: React.FC = () => {
   }) => {
     setOptions(opts);
 
-    const payload = {
+    const payload: any = {
       content: texto,
       singleVisualization: opts.singleView,
     };
+
+    if (!opts.singleView && opts.expirationTime) {
+      payload.expirationTime = opts.expirationTime;
+    }
 
     console.log("Payload para envio:", payload);
     const response = await axios.post("/clipboard", payload);
