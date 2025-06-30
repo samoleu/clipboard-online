@@ -19,16 +19,10 @@ export class ClipboardService {
 
   async findOne(code: string): Promise<Clipboard | null> {
     const query = await this.clipboard.findOne({ code: code });
-
     if (!query) return null;
 
-    const strategies = this.expirationContext.getAllStrategies();
-    for (const strategy of strategies) {
-      if (strategy.shouldHandle(query)) {
-        await strategy.onAccess(query, this.clipboard);
-        break;
-      }
-    }
+    const strategy = this.expirationContext.getStrategyFor(query);
+    await strategy.onAccess(query, this.clipboard);
 
     return query;
   }
