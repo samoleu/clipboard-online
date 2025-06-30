@@ -3,6 +3,6 @@ export class ClipboardDTO {
   content: string;
   singleVisualization: boolean;
   createdAt: Date;
-  updatedAt: Date;
-  accessed: boolean;
+  expiresAt?: Date;
+  expirationTime?: string;
 }

@@ -17,11 +17,12 @@ export const ClipboardSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  accessed: {
-    type: Boolean,
-    default: false,
+  expiresAt: {
+    type: Date,
   },
 });
+
+ClipboardSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export interface Clipboard {
   _id: string;
@@ -29,5 +30,5 @@ export interface Clipboard {
   content: string;
   createdAt?: Date;
   singleVisualization: boolean;
-  accessed: boolean;
+  expiresAt?: Date;
 }

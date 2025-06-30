@@ -6,4 +6,5 @@ export interface ExpirationStrategy {
   handleExpiration(clipboard: Clipboard, model: Model<Clipboard>): Promise<void>;
   getStrategyName(): string;
   getDescription(): string;
+  shouldDeleteAfterAccess?(): boolean;
 } 

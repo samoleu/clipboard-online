@@ -42,11 +42,11 @@ const SidePanel: React.FC<SidePanelProps> = ({ onCreate }) => {
           }`}
         >
           <option value="1h">1 hora</option>
-          {/* <option value="6h">6 horas</option>
+          <option value="6h">6 horas</option>
           <option value="12h">12 horas</option>
           <option value="1d">1 dia</option>
           <option value="3d">3 dias</option>
-          <option value="7d">1 semana</option> */}
+          <option value="7d">1 semana</option>
         </select>
       </div>
 

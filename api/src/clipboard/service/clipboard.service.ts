@@ -5,6 +5,7 @@ import { ClipboardDTO } from '../dto/clipboard.dto';
 import { Clipboard } from '../model/clipboard.model';
 import { AccessCodeGeneratorSingleton } from './access-code-generator';
 import { ExpirationContext } from './strategies/expiration-context';
+import { ExpirationTimeParser } from './utils/expiration-time-parser';
 
 @Injectable()
 export class ClipboardService {
@@ -21,20 +22,14 @@ export class ClipboardService {
 
     if (!query) return null;
 
-    // Mark single visualization clipboards as accessed
-    if (query.singleVisualization && !query.accessed) {
-      await this.clipboard.updateOne(
-        { code: code },
-        { accessed: true }
-      );
-      query.accessed = true;
-    }
-
-    // Use expiration strategy to check and handle expiration
-    const wasExpired = await this.expirationContext.checkAndHandleExpiration(query, this.clipboard);
-    
-    if (wasExpired) {
-      return null;
+    const singleVisualizationStrategy = this.expirationContext.getStrategyByName('single-visualization');
+    if (singleVisualizationStrategy && singleVisualizationStrategy.shouldExpire(query)) {
+      if (singleVisualizationStrategy.shouldDeleteAfterAccess?.()) {
+        setImmediate(async () => {
+          await singleVisualizationStrategy.handleExpiration(query, this.clipboard);
+        });
+        return query;
+      }
     }
 
     return query;
@@ -43,7 +38,11 @@ export class ClipboardService {
   async create(clipboardDTO: ClipboardDTO) {
     clipboardDTO.code = this.accessCodeGenerator.generate();
     clipboardDTO.createdAt = new Date();
-    clipboardDTO.accessed = false; // Ensure new clipboards start as not accessed
+
+    if (!clipboardDTO.singleVisualization) {
+      const expirationTimeMs = ExpirationTimeParser.parse(clipboardDTO.expirationTime || '1h');
+      clipboardDTO.expiresAt = new Date(Date.now() + expirationTimeMs);
+    }
 
     const clipboardInstance = new this.clipboard(clipboardDTO);
     const query = await clipboardInstance.save();
