@@ -17,6 +17,10 @@ export const ClipboardSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  accessed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export interface Clipboard {
@@ -25,4 +29,5 @@ export interface Clipboard {
   content: string;
   createdAt?: Date;
   singleVisualization: boolean;
+  accessed: boolean;
 }

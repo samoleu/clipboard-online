@@ -4,4 +4,5 @@ export class ClipboardDTO {
   singleVisualization: boolean;
   createdAt: Date;
   updatedAt: Date;
+  accessed: boolean;
 }
