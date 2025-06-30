@@ -14,7 +14,7 @@ export class ExpirationContext {
     ];
   }
 
-  getStrategyByName(name: string): ExpirationStrategy | undefined {
-    return this.strategies.find(strategy => strategy.getStrategyName() === name);
+  getAllStrategies(): ExpirationStrategy[] {
+    return this.strategies;
   }
 } 

@@ -22,13 +22,11 @@ export class ClipboardService {
 
     if (!query) return null;
 
-    const singleVisualizationStrategy = this.expirationContext.getStrategyByName('single-visualization');
-    if (singleVisualizationStrategy && singleVisualizationStrategy.shouldExpire(query)) {
-      if (singleVisualizationStrategy.shouldDeleteAfterAccess?.()) {
-        setImmediate(async () => {
-          await singleVisualizationStrategy.handleExpiration(query, this.clipboard);
-        });
-        return query;
+    const strategies = this.expirationContext.getAllStrategies();
+    for (const strategy of strategies) {
+      if (strategy.shouldHandle(query)) {
+        await strategy.onAccess(query, this.clipboard);
+        break;
       }
     }
 

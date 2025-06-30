@@ -22,8 +22,6 @@ export const ClipboardSchema = new mongoose.Schema({
   },
 });
 
-ClipboardSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
-
 export interface Clipboard {
   _id: string;
   code: string;
